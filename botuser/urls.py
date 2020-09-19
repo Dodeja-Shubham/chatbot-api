@@ -1,5 +1,5 @@
 from django.urls import include, path
 from . import views
 urlpatterns = [
-    path('event/hook/', views.event_hook, name='event_hook'),
+    path('send/', views.Send_Message.as_view(), name='event_hook'),
 ]

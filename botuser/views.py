@@ -1,31 +1,22 @@
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
-import json
-from django.http import HttpResponse, JsonResponse
-import slack
 import os
+from slack import WebClient
+from slack.errors import SlackApiError
+from django.views.generic import TemplateView
 
-@csrf_exempt
-def event_hook(request):
-    sec = os.environ.get('SECRET_KEY')
-    print(sec)
-    client = slack.WebClient(token=settings.BOT_USER_ACCESS_TOKEN)
-    json_dict = json.loads(request.body.decode('utf-8'))
-    if json_dict['token'] != settings.VERIFICATION_TOKEN:
-        return HttpResponse(status=403)
-    if 'type' in json_dict:
-        if json_dict['type'] == 'url_verification':
-            response_dict = {"challenge": json_dict['challenge']}
-            return JsonResponse(response_dict, safe=False)
-    if 'event' in json_dict:
-        event_msg = json_dict['event']
-        if ('subtype' in event_msg) and (event_msg['subtype'] == 'bot_message'):
-            return HttpResponse(status=200)
-    if event_msg['type'] == 'message':
-        user = event_msg['user']
-        channel = event_msg['channel']
-        response_msg = ":wave:, Hello <@%s>" % user
-        client.chat_postMessage(channel=channel, text=response_msg)
-        return HttpResponse(status=200)
-    return HttpResponse(status=200)
+    
+
+class Send_Message(TemplateView):
+    template_name = "about.html"
+    client = WebClient(
+        token='xoxb-1374653515218-1368072411398-0aEaXgUzLh8lrCMWa6dNRGHB')
+    try:
+        response = client.chat_postMessage(
+            channel='#random',
+            text="Hello world!")
+        assert response["message"]["text"] == "Hello world!"
+    except SlackApiError as e:
+        # You will get a SlackApiError if "ok" is False
+        assert e.response["ok"] is False
+        # str like 'invalid_auth', 'channel_not_found'
+        assert e.response["error"]
+        print(f"Got an error: {e.response['error']}")
