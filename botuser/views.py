@@ -11,7 +11,7 @@ class Send_Message(TemplateView):
         token='xoxb-1374653515218-1368072411398-0aEaXgUzLh8lrCMWa6dNRGHB')
     try:
         response = client.chat_postMessage(
-            channel='#general',
+            channel='#chatbot',
             text="Hello world!")
         assert response["message"]["text"] == "Hello world!"
     except SlackApiError as e:
