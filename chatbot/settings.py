@@ -22,7 +22,6 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ib%(n&2fd0e-lgrwjhx^oh(ozbvhzwk%*)_wwv&6e$zm0x)#s='
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -151,9 +150,7 @@ BOT_USER_ACCESS_TOKEN = 'xoxb-1374653515218-1359920542951-SR7e4XBdMr5Cdwf3QTEqXL
 CLIENT_ID = '1374653515218.1398498167104'
 CLIENT_SECRET = 'b527dc781e6c39aba6fa34473576e65a'
 
-#SECRET_KEY = os.environ.get('SECRET_KEY')
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 django_heroku.settings(locals())

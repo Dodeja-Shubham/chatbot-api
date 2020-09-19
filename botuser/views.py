@@ -4,9 +4,12 @@ from django.conf import settings
 import json
 from django.http import HttpResponse, JsonResponse
 import slack
+import os
 
 @csrf_exempt
 def event_hook(request):
+    sec = os.environ.get('SECRET_KEY')
+    print(sec)
     client = slack.WebClient(token=settings.BOT_USER_ACCESS_TOKEN)
     json_dict = json.loads(request.body.decode('utf-8'))
     if json_dict['token'] != settings.VERIFICATION_TOKEN:
