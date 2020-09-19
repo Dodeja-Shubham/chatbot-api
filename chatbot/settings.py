@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import dj_database_url
 from pathlib import Path
 import os
 
@@ -21,12 +22,12 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ib%(n&2fd0e-lgrwjhx^oh(ozbvhzwk%*)_wwv&6e$zm0x)#s='
+#SECRET_KEY = 'ib%(n&2fd0e-lgrwjhx^oh(ozbvhzwk%*)_wwv&6e$zm0x)#s='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', 'https://chatbotmckinley.herokuapp.com/']
 
 
 # Application definition
@@ -39,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'botuser.apps.BotuserConfig'
+    'whitenoise.runserver_nostatic',
+
+    'botuser.apps.BotuserConfig',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'chatbot.urls'
@@ -85,6 +89,9 @@ DATABASES = {
         'HOST': '127.0.0.1',
     }
 }
+
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 
 
@@ -125,9 +132,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+#location where django collect all static files
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
+# location where you will store your static files
+STATICFILES_DIRS = [os.path.join(BASE_DIR,'project_name/static')
+]
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_URL = '/media/'
 
 VERIFICATION_TOKEN = 'vctS46X484uwj7bAw9k8YO3H'
 OAUTH_ACCESS_TOKEN = 'xoxp-1374653515218-1374861011699-1374877246979-01870ee5c5c876e0188f30168a644629'
 BOT_USER_ACCESS_TOKEN = 'xoxb-1374653515218-1359920542951-SR7e4XBdMr5Cdwf3QTEqXLQb'
 CLIENT_ID = '1374653515218.1398498167104'
 CLIENT_SECRET = 'b527dc781e6c39aba6fa34473576e65a'
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
