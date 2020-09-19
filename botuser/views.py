@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 import json
 from django.http import HttpResponse, JsonResponse
+from rest_framework.views import APIView
 
 @csrf_exempt
 def event_hook(request):
@@ -15,3 +16,4 @@ def event_hook(request):
             response_dict = {"challenge": json_dict['challenge']}
             return JsonResponse(response_dict, safe=False)
     return HttpResponse(status=500)
+

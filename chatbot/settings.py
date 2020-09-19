@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import django_heroku
 import dj_database_url
 from pathlib import Path
 import os
@@ -22,10 +22,10 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = 'ib%(n&2fd0e-lgrwjhx^oh(ozbvhzwk%*)_wwv&6e$zm0x)#s='
+SECRET_KEY = 'ib%(n&2fd0e-lgrwjhx^oh(ozbvhzwk%*)_wwv&6e$zm0x)#s='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*', 'https://chatbotmckinley.herokuapp.com/']
 
@@ -80,18 +80,22 @@ WSGI_APPLICATION = 'chatbot.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'chatbot',
-        'USER': 'shubham',
-        'PASSWORD': 'wsx123',
-        'HOST': '127.0.0.1',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'chatbot',
+#         'USER': 'shubham',
+#         'PASSWORD': 'wsx123',
+#         'HOST': '127.0.0.1',
+#     }
+# }
 
-db_from_env = dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(db_from_env)
+# db_from_env = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'].update(db_from_env)
+
+DATABASES = {
+    'default': dj_database_url.config()
+}
 
 
 
@@ -135,7 +139,7 @@ STATIC_URL = '/static/'
 #location where django collect all static files
 STATIC_ROOT = os.path.join(BASE_DIR,'static')
 # location where you will store your static files
-STATICFILES_DIRS = [os.path.join(BASE_DIR,'project_name/static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR,'chatbot/static')
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
@@ -147,8 +151,9 @@ BOT_USER_ACCESS_TOKEN = 'xoxb-1374653515218-1359920542951-SR7e4XBdMr5Cdwf3QTEqXL
 CLIENT_ID = '1374653515218.1398498167104'
 CLIENT_SECRET = 'b527dc781e6c39aba6fa34473576e65a'
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+#SECRET_KEY = os.environ.get('SECRET_KEY')
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+django_heroku.settings(locals())
