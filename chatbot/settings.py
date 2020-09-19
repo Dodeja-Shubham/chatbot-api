@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = 'ib%(n&2fd0e-lgrwjhx^oh(ozbvhzwk%*)_wwv&6e$zm0x)#s='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*', 'https://chatbotmckinley.herokuapp.com/']
 
