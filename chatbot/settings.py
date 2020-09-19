@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = 'ib%(n&2fd0e-lgrwjhx^oh(ozbvhzwk%*)_wwv&6e$zm0x)#s='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'botuser.apps.BotuserConfig'
 ]
 
 MIDDLEWARE = [
@@ -122,3 +125,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+VERIFICATION_TOKEN = 'vctS46X484uwj7bAw9k8YO3H'
+OAUTH_ACCESS_TOKEN = 'xoxp-1374653515218-1374861011699-1374877246979-01870ee5c5c876e0188f30168a644629'
+BOT_USER_ACCESS_TOKEN = 'xoxb-1374653515218-1359920542951-SR7e4XBdMr5Cdwf3QTEqXLQb'
+CLIENT_ID = '1374653515218.1398498167104'
+CLIENT_SECRET = 'b527dc781e6c39aba6fa34473576e65a'
