@@ -1,5 +1,6 @@
 from django.urls import include, path
-from . import views
+from botuser import views
 urlpatterns = [
-    path('send/', views.Send_Message.as_view(), name='event_hook'),
+    path('send/', views.Send_Message_View.as_view()),
+    path('schedule/', views.Schedule_Message_View.as_view(), name='schedule'),
 ]

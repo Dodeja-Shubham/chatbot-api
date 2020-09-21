@@ -38,11 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_slack_oauth',
 
     'whitenoise.runserver_nostatic',
+    'rest_framework',
 
     'botuser.apps.BotuserConfig',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -145,10 +148,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
 VERIFICATION_TOKEN = 'pa3zqIPrhaHt2DCOhI0ae9uk'
-OAUTH_ACCESS_TOKEN = 'xoxp-1374653515218-1374861011699-1368072407478-4e5c798821494cdb9d0a6856c301079c'
-BOT_USER_ACCESS_TOKEN = 'xoxb-1374653515218-1368072411398-0aEaXgUzLh8lrCMWa6dNRGHB'
-CLIENT_ID = '1374653515218.1380993987428'
-CLIENT_SECRET = '9612bad40b9c238ee47edcb109c50f95'
+OAUTH_ACCESS_TOKEN = os.environ.get('USER_ACCESS_TOKEN')
+BOT_USER_ACCESS_TOKEN = os.environ.get('BOT_AUTH_TOKEN')
+SLACK_CLIENT_ID = '1374653515218.1380993987428'
+SLACK_CLIENT_SECRET = '9612bad40b9c238ee47edcb109c50f95'
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
