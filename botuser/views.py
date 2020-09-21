@@ -43,7 +43,7 @@ class Send_Message_View(generics.GenericAPIView,
             if serializer.validated_data.get('is_user') == True:
                 client = WebClient(token= settings.OAUTH_ACCESS_TOKEN)
             else:
-                client = WebClient(token= settings.BOT_USER_ACCESS_TOKEN)
+                client = WebClient(token= "xoxb-1374653515218-1368072411398-WhZyNCk9Vg9mB3X7uhspKxEX")
             try:
                 response = client.chat_postMessage(
                     channel=serializer.validated_data.get('channel'),
@@ -96,7 +96,7 @@ class Schedule_Message_View(generics.GenericAPIView,
             if serializer.validated_data.get('is_user') == True:
                 client = WebClient(token= settings.OAUTH_ACCESS_TOKEN)
             else:
-                client = WebClient(token= settings.BOT_USER_ACCESS_TOKEN)
+                client = WebClient(token= "xoxb-1374653515218-1368072411398-WhZyNCk9Vg9mB3X7uhspKxEX")
             try:
                 response = client.chat_scheduleMessage(
                     channel=serializer.validated_data.get('channel'),
