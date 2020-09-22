@@ -35,7 +35,6 @@ def slack_user(request, api_data):
     data = deepcopy(api_data)
 
     slacker, _ = SlackUser.objects.get_or_create(slacker=request.user)
-    slacker.access_token = data.pop('access_token')
     slacker.extras = data
     slacker.save()
 

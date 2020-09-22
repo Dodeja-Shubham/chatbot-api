@@ -39,6 +39,9 @@ class SlackOAuthRequest(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.access_token
+
     class Meta:
         verbose_name = "Slack OAuth Request"
         verbose_name_plural = "Slack OAuth Requests"
