@@ -50,9 +50,14 @@ class Send_Message_View(generics.GenericAPIView,
                 client = WebClient(
                     token="xoxb-1374653515218-1368072411398-WhZyNCk9Vg9mB3X7uhspKxEX")
             try:
+                if token == "xoxp-1374653515218-1374861011699-1365187707175-0849666be9ab0afb54425257cb9c2882":
+                    user = True
+                else:
+                    user = False
                 response = client.chat_postMessage(
                     channel=serializer.validated_data.get('channel'),
                     text=serializer.validated_data.get('text'),
+                    as_user=user,
                 )
                 assert response["message"]["text"] == serializer.validated_data.get(
                     'text')
@@ -61,7 +66,7 @@ class Send_Message_View(generics.GenericAPIView,
             except SlackApiError as e:
                 assert e.response["ok"] is False
                 assert e.response["error"]
-                return Response(f"Got an error: {e.response['error']}", status=status.HTTP_400_BAD_REQUEST)
+                return Response(f"Got an error: {e.response}", status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -108,10 +113,15 @@ class Schedule_Message_View(generics.GenericAPIView,
                 client = WebClient(
                     token="xoxb-1374653515218-1368072411398-WhZyNCk9Vg9mB3X7uhspKxEX")
             try:
+                if token == "xoxp-1374653515218-1374861011699-1365187707175-0849666be9ab0afb54425257cb9c2882":
+                    user = True
+                else:
+                    user = False
                 response = client.chat_scheduleMessage(
                     channel=serializer.validated_data.get('channel'),
                     text=serializer.validated_data.get('text'),
-                    post_at=epoch_time
+                    post_at=epoch_time,
+                    as_user=user,
                 )
                 assert response["message"]["text"] == serializer.validated_data.get(
                     'text')
