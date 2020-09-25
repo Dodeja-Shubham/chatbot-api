@@ -8,9 +8,9 @@ from rest_framework import permissions
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Reviewlin API",
+      title="Chatbot API",
       default_version='v1',
-      description="This is the REST API documentation for Reviewlin API\'s",
+      description="This is the REST API documentation for Chatbot API\'s",
       terms_of_service="https://www.google.com/policies/terms/",
    ),
    public=True,
