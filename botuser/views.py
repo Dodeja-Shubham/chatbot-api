@@ -7,11 +7,12 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework import status, generics, mixins
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 
-from .serializers import Send_Message_Serializer, Schedule_Message_Serializer
-from .models import Send_Message, Schedule_Message
+from .serializers import Send_Message_Serializer, Schedule_Message_Serializer, Join_Conversation_Serializer
+from .models import Send_Message, Schedule_Message, Conversation
 from django_slack_oauth.models import SlackOAuthRequest
 
 
@@ -48,17 +49,25 @@ class Send_Message_View(generics.GenericAPIView,
                 client = WebClient(token=token)
             else:
                 client = WebClient(
-                    token="xoxb-1374653515218-1368072411398-WhZyNCk9Vg9mB3X7uhspKxEX")
+                    token="xoxb-1374653515218-1368072411398-Z6E9pzpuqF3eOKLed2tNvZEp")
             try:
-                if token == "xoxp-1374653515218-1374861011699-1365187707175-0849666be9ab0afb54425257cb9c2882":
-                    user = True
+                if token == "xoxp-1374653515218-1374861011699-1377598440358-fdc5b7351150bfafbcbb4f371afea9b9":
+                    response = client.chat_postMessage(
+                        channel=serializer.validated_data.get('channel'),
+                        text=serializer.validated_data.get('text'),
+                        as_user=True,
+                    )
+                elif serializer.validated_data.get('is_user') == True:
+                    response = client.chat_postMessage(
+                        channel=serializer.validated_data.get('channel'),
+                        text=serializer.validated_data.get('text'),
+                        as_user=False,
+                    )
                 else:
-                    user = False
-                response = client.chat_postMessage(
-                    channel=serializer.validated_data.get('channel'),
-                    text=serializer.validated_data.get('text'),
-                    as_user=user,
-                )
+                    response = client.chat_postMessage(
+                        channel=serializer.validated_data.get('channel'),
+                        text=serializer.validated_data.get('text'),
+                    )
                 assert response["message"]["text"] == serializer.validated_data.get(
                     'text')
                 serializer.save()
@@ -111,18 +120,28 @@ class Schedule_Message_View(generics.GenericAPIView,
                 client = WebClient(token=token)
             else:
                 client = WebClient(
-                    token="xoxb-1374653515218-1368072411398-WhZyNCk9Vg9mB3X7uhspKxEX")
+                    token="xoxb-1374653515218-1368072411398-Z6E9pzpuqF3eOKLed2tNvZEp")
             try:
-                if token == "xoxp-1374653515218-1374861011699-1365187707175-0849666be9ab0afb54425257cb9c2882":
-                    user = True
+                if token == "xoxp-1374653515218-1374861011699-1377598440358-fdc5b7351150bfafbcbb4f371afea9b9":
+                    response = client.chat_scheduleMessage(
+                        channel=serializer.validated_data.get('channel'),
+                        text=serializer.validated_data.get('text'),
+                        post_at=epoch_time,
+                        as_user=True,
+                    )
+                elif serializer.validated_data.get('is_user') == True:
+                    response = client.chat_scheduleMessage(
+                        channel=serializer.validated_data.get('channel'),
+                        text=serializer.validated_data.get('text'),
+                        post_at=epoch_time,
+                        as_user=False,
+                    )
                 else:
-                    user = False
-                response = client.chat_scheduleMessage(
-                    channel=serializer.validated_data.get('channel'),
-                    text=serializer.validated_data.get('text'),
-                    post_at=epoch_time,
-                    as_user=user,
-                )
+                    response = client.chat_scheduleMessage(
+                        channel=serializer.validated_data.get('channel'),
+                        text=serializer.validated_data.get('text'),
+                        post_at=epoch_time,
+                    )
                 assert response["message"]["text"] == serializer.validated_data.get(
                     'text')
                 serializer.save()
@@ -132,3 +151,55 @@ class Schedule_Message_View(generics.GenericAPIView,
                 assert e.response["error"]
                 return Response(f"Got an error: {e.response['error']}", status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class List_Conversation_View(APIView):
+    token = str(SlackOAuthRequest.objects.last())
+    def get(self, request):
+        client = WebClient(
+                    token=self.token)
+        try:
+            response = client.conversations_list()
+            conversations = response["channels"]
+            return Response(conversations)
+        except SlackApiError as e:
+            assert e.response["ok"] is False
+            assert e.response["error"]
+            return Response(f"Got an error: {e.response}", status=status.HTTP_400_BAD_REQUEST)
+
+class Join_Conversation_View(generics.GenericAPIView,
+                            mixins.CreateModelMixin,
+                            mixins.ListModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin,
+                            mixins.RetrieveModelMixin,):
+
+    serializer_class = Join_Conversation_Serializer
+    queryset = Conversation.objects.all()
+    lookup_field = 'id'
+
+    def get(self, request, id=None):
+        '''
+        GET Request
+        '''
+
+        if id:
+            return self.retrieve(request, id)
+        else:
+            return self.list(request)
+    @csrf_exempt
+    def post(self, request):
+        token = str(SlackOAuthRequest.objects.last())
+        serializer = self.serializer_class(data=request.data)
+        client = WebClient(
+                    token=token)
+        if serializer.is_valid():
+            try:
+                response = client.conversations_join(
+                            channel=serializer.validated_data.get('conversation_id'),
+                        )
+                serializer.save()
+                return Response("Joined the Channel")
+            except SlackApiError as e:
+                assert e.response["ok"] is False
+                assert e.response["error"]
+                return Response(f"Got an error: {e.response}", status=status.HTTP_400_BAD_REQUEST)
