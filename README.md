@@ -33,13 +33,13 @@
 ## Workflow
 - `Once the project is deployed onto a server below mentioned methods can be called from specific URLs`
 - [Send Message](https://chatbotmckinley.herokuapp.com/bot/send)
-- `The Send Message method gives user 2 functionalities 
-1) Send Message as a bot (Set is_user = False)
-2) Send Message as a user (Set is_user = True) `
+- `The Send Message method gives user 2 functionalities`
+    1) Send Message as a bot (Set is_user = False)
+    2) Send Message as a user (Set is_user = True) 
 - [Schedule Message](https://chatbotmckinley.herokuapp.com/bot/schedule)
-- `The schedule Message method gives user 2 functionalities 
-1) Schedule Message as a bot (Set is_user = False) : The message is scheduled using a date-time field which is converted into an epoch value at the backend
-2) Schedule Message as a user (Set is_user = True) : The message is scheduled using a date-time field which is converted into an epoch value at the backend`
+- `The schedule Message method gives user 2 functionalities`
+    1) Schedule Message as a bot (Set is_user = False) : The message is scheduled using a date-time field which is converted into an epoch value at the backend
+    2) Schedule Message as a user (Set is_user = True) : The message is scheduled using a date-time field which is converted into an epoch value at the backend
 - [Join Conversation/Channel](https://chatbotmckinley.herokuapp.com/bot/coversation/)
 - `The Join Conversation/Channel method allows the user to join a channel which they are not a part of using the conversation id`
 - [List Conversation/Channel](https://chatbotmckinley.herokuapp.com/bot/coversation/list)
