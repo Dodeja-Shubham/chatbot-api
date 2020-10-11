@@ -122,7 +122,7 @@ class GetTokens(APIView):
 
     def get(self, request):
         response = {
-            "user token": str(SlackOAuthRequest.objects.last())
+            "user token": str(SlackOAuthRequest.objects.last()),
             "bot token": "xoxb-1374653515218-1368072411398-BlydyjMUbpAoFKu0WqR7RoDM"
         }
 
