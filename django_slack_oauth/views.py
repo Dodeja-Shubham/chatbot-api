@@ -9,6 +9,7 @@ import django
 from django.contrib import messages
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django_slack_oauth.models import SlackOAuthRequest
 
 DJANGO_MAJOR_VERSION =  int(django.__version__.split('.')[0])
 if DJANGO_MAJOR_VERSION < 2:
@@ -122,7 +123,7 @@ class GetTokens(APIView):
 
     def get(self, request):
         response = {
-            "user token": str(SlackOAuthRequest.objects.last()),
+            "logged in user token": str(SlackOAuthRequest.objects.last()),
             "bot token": "xoxb-1374653515218-1368072411398-BlydyjMUbpAoFKu0WqR7RoDM"
         }
 
