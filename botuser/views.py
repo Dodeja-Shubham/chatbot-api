@@ -49,9 +49,9 @@ class Send_Message_View(generics.GenericAPIView,
                 client = WebClient(token=token)
             else:
                 client = WebClient(
-                    token="xoxb-1374653515218-1368072411398-t49WK5rbvwcqvba2VIJCxxA1")
+                    token="xoxb-1374653515218-1368072411398-BlydyjMUbpAoFKu0WqR7RoDM")
             try:
-                if token == "xoxp-1374653515218-1374861011699-1373091764455-c1ca79f54e49a2dcff39d12eba66f5dd":
+                if token == "xoxp-1374653515218-1374861011699-1427027291732-f0b854a356fd083e49439602e92f05d9":
                     response = client.chat_postMessage(
                         channel=serializer.validated_data.get('channel'),
                         text=serializer.validated_data.get('text'),
@@ -120,9 +120,9 @@ class Schedule_Message_View(generics.GenericAPIView,
                 client = WebClient(token=token)
             else:
                 client = WebClient(
-                    token="xoxb-1374653515218-1368072411398-t49WK5rbvwcqvba2VIJCxxA1")
+                    token="xoxb-1374653515218-1368072411398-BlydyjMUbpAoFKu0WqR7RoDM")
             try:
-                if token == "xoxp-1374653515218-1374861011699-1373091764455-c1ca79f54e49a2dcff39d12eba66f5dd":
+                if token == "xoxp-1374653515218-1374861011699-1427027291732-f0b854a356fd083e49439602e92f05d9":
                     response = client.chat_scheduleMessage(
                         channel=serializer.validated_data.get('channel'),
                         text=serializer.validated_data.get('text'),
