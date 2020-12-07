@@ -124,8 +124,8 @@ class GetTokens(APIView):
     def get(self, request):
         response = {
             "logged in user token": str(SlackOAuthRequest.objects.last()),
-            "bot token": "xoxb-1374653515218-1368072411398-BlydyjMUbpAoFKu0WqR7RoDM",
-            "admin token": "xoxp-1374653515218-1374861011699-1427027291732-f0b854a356fd083e49439602e92f05d9"
+            "bot token": settings.BOT_USER_ACCESS_TOKEN,
+            "admin token": settings.OAUTH_ACCESS_TOKEN
         }
 
         return Response(response)

@@ -32,6 +32,7 @@ class Send_Message_View(generics.GenericAPIView,
         GET Request
         '''
         if id:
+            print(settings.BOT_USER_ACCESS_TOKEN, settings.OAUTH_ACCESS_TOKEN)
             return self.retrieve(request, id)
         else:
             return self.list(request)
@@ -49,9 +50,9 @@ class Send_Message_View(generics.GenericAPIView,
                 client = WebClient(token=token)
             else:
                 client = WebClient(
-                    token="xoxb-1374653515218-1368072411398-BlydyjMUbpAoFKu0WqR7RoDM")
+                    token=settings.BOT_USER_ACCESS_TOKEN)
             try:
-                if token == "xoxp-1374653515218-1374861011699-1427027291732-f0b854a356fd083e49439602e92f05d9":
+                if token == settings.OAUTH_ACCESS_TOKEN:
                     response = client.chat_postMessage(
                         channel=serializer.validated_data.get('channel'),
                         text=serializer.validated_data.get('text'),
@@ -120,9 +121,9 @@ class Schedule_Message_View(generics.GenericAPIView,
                 client = WebClient(token=token)
             else:
                 client = WebClient(
-                    token="xoxb-1374653515218-1368072411398-BlydyjMUbpAoFKu0WqR7RoDM")
+                    token=settings.BOT_USER_ACCESS_TOKEN)
             try:
-                if token == "xoxp-1374653515218-1374861011699-1427027291732-f0b854a356fd083e49439602e92f05d9":
+                if token == settings.OAUTH_ACCESS_TOKEN:
                     response = client.chat_scheduleMessage(
                         channel=serializer.validated_data.get('channel'),
                         text=serializer.validated_data.get('text'),
